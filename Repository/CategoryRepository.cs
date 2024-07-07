@@ -15,5 +15,14 @@ namespace PokemonWebAPI.Repository
         public ICollection<Category> GetCategories(){
             return _context.Categories.OrderBy(c => c.Id).ToList();
         }
+    
+        public bool CategoryExists(int categoryId){
+            return _context.Categories.Any(c => c.Id == categoryId);
+        }
+    
+        public Category GetCategory(int categoryId){
+            return _context.Categories.Where(c => c.Id == categoryId).FirstOrDefault()
+                    ?? throw new KeyNotFoundException($"Category with ID {categoryId} not found.");
+        }
     }
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PokemonWebAPI.Dto;
 using PokemonWebAPI.Interfaces;
+using PokemonWebAPI.Models;
 
 namespace PokemonWebAPI.Controllers
 {
@@ -28,6 +29,22 @@ namespace PokemonWebAPI.Controllers
                 return BadRequest(ModelState);
 
             return Ok(countries);
+        }
+    
+        [HttpGet("{countryId}")]
+        [ProducesResponseType(200, Type = typeof(Country))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCountry(int countryId)
+        {
+            if (!_countryRepository.CountryExists(countryId))
+                return NotFound();
+
+            var country = _mapper.Map<CountryDto>(_countryRepository.GetCountry(countryId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(country);
         }
     }
 }
