@@ -7,5 +7,6 @@ namespace PokemonWebAPI.Interfaces
         ICollection<Country> GetCountries();
         bool CountryExists(int countryId);
         Country GetCountry(int countryId);
+        Country GetCountryByOwner(int ownerId);
     }
 }

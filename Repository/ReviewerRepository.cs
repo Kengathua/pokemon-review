@@ -25,5 +25,9 @@ namespace PokemonWebAPI.Repository
             return _context.Reviewers.SingleOrDefault(o => o.Id == reviewerId) 
                    ?? throw new KeyNotFoundException($"Reviewer with ID {reviewerId} not found.");
         }
+    
+        public ICollection<Review> GetReviewsByReviewer(int reviewerId){
+            return _context.Reviews.Where(r => r.Reviewer.Id == reviewerId).ToList();
+        }
     }
 }

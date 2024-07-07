@@ -7,5 +7,6 @@ namespace PokemonWebAPI.Interfaces
         ICollection<Category> GetCategories();
         bool CategoryExists(int categoryId);
         Category GetCategory(int categoryId);
+        ICollection<Pokemon> GetPokemonsByCategory(int categoryId);
     }
 }

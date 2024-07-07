@@ -46,5 +46,21 @@ namespace PokemonWebAPI.Controllers
 
             return Ok(reviewer);
         }
+    
+        [HttpGet("{reviewerId}/reviews")]
+        [ProducesResponseType(200, Type = typeof(ICollection<Review>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetReviewsByReviewer(int reviewerId)
+        {
+            if (!_reviewerRepository.ReviewerExists(reviewerId))
+                return NotFound();
+
+            var reviewer = _mapper.Map<List<ReviewDto>>(_reviewerRepository.GetReviewsByReviewer(reviewerId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(reviewer);
+        }
     }
 }

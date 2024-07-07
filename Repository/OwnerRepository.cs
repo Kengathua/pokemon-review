@@ -27,5 +27,10 @@ namespace PokemonWebAPI.Repository
             return _context.Owners.SingleOrDefault(o => o.Id == id) 
                    ?? throw new KeyNotFoundException($"Owner with ID {id} not found.");
         }
+    
+        public ICollection<Pokemon> GetPokemonsByOwner(int ownerId)
+        {
+            return _context.PokemonOwners.Where(po => po.OwnerId == ownerId).Select(po => po.Pokemon).ToList();
+        }
     }
 }
