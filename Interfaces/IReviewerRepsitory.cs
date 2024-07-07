@@ -7,5 +7,6 @@ namespace PokemonWebAPI.Interfaces
         ICollection<Reviewer> GetReviewers();
         bool ReviewerExists(int reviewerId);
         Reviewer GetReviewer(int reviewerId);
+        ICollection<Review> GetReviewsByReviewer(int reviewerId);
     }
 }

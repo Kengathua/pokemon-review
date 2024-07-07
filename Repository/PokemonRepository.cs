@@ -27,5 +27,14 @@ namespace PokemonWebAPI.Repository
             return _context.Pokemon.SingleOrDefault(o => o.Id == pokemonId) 
                    ?? throw new KeyNotFoundException($"Pokemon with ID {pokemonId} not found.");
         }
+    
+        public decimal GetPokemonRating(int pokemonId) {
+            var review = _context.Reviews.Where(r => r.Pokemon.Id == pokemonId);
+            if (!review.Any()) {
+                return 0;
+            }
+        
+            return (decimal)review.Sum(r => r.Rating) / review.Count();
+        }
     }
 }

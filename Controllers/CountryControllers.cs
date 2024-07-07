@@ -10,13 +10,15 @@ namespace PokemonWebAPI.Controllers
     [ApiController]
     public class CountryController : Controller
     {
+        private readonly IOwnerRepository _ownerRepository;
         private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
-        public CountryController(ICountryRepository countryRepository, IMapper mapper)
+        public CountryController(ICountryRepository countryRepository,  IOwnerRepository ownerRepository, IMapper mapper)
         {
-            _countryRepository = countryRepository;
             _mapper = mapper;
+            _ownerRepository = ownerRepository;
+            _countryRepository = countryRepository;
         }
 
         [HttpGet]
@@ -43,6 +45,22 @@ namespace PokemonWebAPI.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            return Ok(country);
+        }
+
+        [HttpGet("/owners/{ownerId}")]
+        [ProducesResponseType(200, Type = typeof(Country))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCountryByOwner(int ownerId){
+            if (!_ownerRepository.OwnerExists(ownerId))
+                return NotFound();
+
+            var country = _mapper.Map<CountryDto>(
+                _countryRepository.GetCountryByOwner(ownerId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
 
             return Ok(country);
         }

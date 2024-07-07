@@ -31,7 +31,7 @@ namespace PokemonWebAPI.Controllers
 
             return Ok(owners);
         }
-    
+
         [HttpGet("{ownerId}")]
         [ProducesResponseType(200, Type = typeof(Owner))]
         [ProducesResponseType(400)]
@@ -46,6 +46,22 @@ namespace PokemonWebAPI.Controllers
                 return BadRequest(ModelState);
 
             return Ok(owner);
+        }
+
+        [HttpGet("pokemon/{ownerId}")]
+        [ProducesResponseType(200, Type = typeof(ICollection<Pokemon>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetPokemonByOwner(int ownerId){
+            if (!_ownerRepository.OwnerExists(ownerId))
+                return NotFound();
+
+            var pokemons = _mapper.Map<List<PokemonDto>>(
+                _ownerRepository.GetPokemonsByOwner(ownerId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(pokemons);
         }
     }
 }

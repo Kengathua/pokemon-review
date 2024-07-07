@@ -15,8 +15,8 @@ namespace PokemonWebAPI.Controllers
 
         public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
         {
-            _categoryRepository = categoryRepository;
             _mapper = mapper;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
@@ -45,6 +45,23 @@ namespace PokemonWebAPI.Controllers
                 return BadRequest(ModelState);
 
             return Ok(category);
+        }
+
+        [HttpGet("pokemon/{categoryId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetPokemonsByCategory(int categoryId)
+        {
+            if (!_categoryRepository.CategoryExists(categoryId))
+                return NotFound();
+
+            var pokemons = _mapper.Map<List<PokemonDto>>(
+                _categoryRepository.GetPokemonsByCategory(categoryId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(pokemons);
         }
     }
 }

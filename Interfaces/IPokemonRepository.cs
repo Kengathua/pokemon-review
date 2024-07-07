@@ -7,5 +7,7 @@ namespace PokemonWebAPI.Interfaces
         ICollection<Pokemon> GetPokemons();
         bool PokemonExists(int pokemonId);
         Pokemon GetPokemon(int pokemonId);
+        decimal GetPokemonRating(int pokemonId);
+
     }
 }

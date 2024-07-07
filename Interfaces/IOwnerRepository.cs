@@ -7,5 +7,6 @@ namespace PokemonWebAPI.Interfaces
         ICollection<Owner> GetOwners();
         bool OwnerExists(int ownerId);
         Owner GetOwner(int ownerId);
+        ICollection<Pokemon> GetPokemonsByOwner(int ownerId);
     }
 }
