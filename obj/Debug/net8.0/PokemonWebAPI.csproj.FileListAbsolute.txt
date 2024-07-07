@@ -105,3 +105,4 @@
 /Users/gathua/trials/PokemonWebAPI/obj/Debug/net8.0/PokemonWebAPI.pdb
 /Users/gathua/trials/PokemonWebAPI/obj/Debug/net8.0/PokemonWebAPI.genruntimeconfig.cache
 /Users/gathua/trials/PokemonWebAPI/obj/Debug/net8.0/ref/PokemonWebAPI.dll
+/Users/gathua/trials/PokemonWebAPI/obj/Debug/net8.0/PokemonWebAPI.sourcelink.json

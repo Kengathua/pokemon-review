@@ -17,5 +17,15 @@ namespace PokemonWebAPI.Repository
         {
             return _context.Pokemon.OrderBy(p => p.Id).ToList();
         }
+
+        public bool PokemonExists(int pokemonId){
+            return _context.Pokemon.Any(o => o.Id == pokemonId);
+        }
+
+        public Pokemon GetPokemon(int pokemonId)
+        {
+            return _context.Pokemon.SingleOrDefault(o => o.Id == pokemonId) 
+                   ?? throw new KeyNotFoundException($"Pokemon with ID {pokemonId} not found.");
+        }
     }
 }
