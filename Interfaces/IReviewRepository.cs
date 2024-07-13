@@ -7,5 +7,6 @@ namespace PokemonWebAPI.Interfaces
         ICollection<Review> GetReviews();
         bool ReviewExists(int reviewId);
         Review GetReview(int reviewId);
+        ICollection<Review> GetReviewsByPokemon(int pokeId);
     }
 }

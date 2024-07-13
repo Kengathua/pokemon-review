@@ -8,5 +8,7 @@ namespace PokemonWebAPI.Interfaces
         bool CountryExists(int countryId);
         Country GetCountry(int countryId);
         Country GetCountryByOwner(int ownerId);
+        bool CreateCountry(Country country);
+        bool Save();
     }
 }

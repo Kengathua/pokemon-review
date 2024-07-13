@@ -63,5 +63,27 @@ namespace PokemonWebAPI.Controllers
 
             return Ok(pokemons);
         }
+
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
+        {
+            if (categoryCreate == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+        
+            var categoryMap = _mapper.Map<Category>(categoryCreate);
+        
+            if (!_categoryRepository.CreateCategory(categoryMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
+        }
     }
 }

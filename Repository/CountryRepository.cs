@@ -29,5 +29,15 @@ namespace PokemonWebAPI.Repository
             return _context.Owners.Where(o => o.Id == ownerId).Select(o => o.Country).FirstOrDefault()
                     ?? throw new KeyNotFoundException($"Owner with ID {ownerId} not found.");
         }
+    
+        public bool CreateCountry(Country country)
+        {
+            _context.Add(country);
+            return Save();
+        }
+
+        public bool Save(){
+            return _context.SaveChanges()> 0? true: false;
+        }
     }
 }

@@ -6,7 +6,7 @@ using PokemonWebAPI.Models;
 
 namespace PokemonWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/countries")]
     [ApiController]
     public class CountryController : Controller
     {
@@ -22,15 +22,43 @@ namespace PokemonWebAPI.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<CountryDto>))]
-        public IActionResult GetCountries()
+        [ProducesResponseType(200, Type = typeof(PaginatedResponse<CountryDto>))]
+        public IActionResult GetCountries(int pageNumber = 1, int pageSize = 10)
         {
-            var countries = _mapper.Map<List<CountryDto>>(_countryRepository.GetCountries());
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                return BadRequest("Page number and page size should be greater than 0.");
+            }
+
+            var countriesFromRepo = _countryRepository.GetCountries();
+            var totalCountries = countriesFromRepo.Count;
+
+            var countries = countriesFromRepo
+                                .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToList();
+
+            var countryDtos = _mapper.Map<List<CountryDto>>(countries);
 
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
-            return Ok(countries);
+            var totalPages = (int)Math.Ceiling(totalCountries / (double)pageSize);
+
+            var response = new PaginatedResponse<CountryDto>
+            {
+                Data = countryDtos,
+                TotalCount = totalCountries,
+                PageSize = pageSize,
+                CurrentPage = pageNumber,
+                TotalPages = totalPages,
+                HasNextPage = pageNumber < totalPages,
+                HasPreviousPage = pageNumber > 1
+            };
+
+            return Ok(response);
         }
     
         [HttpGet("{countryId}")]
@@ -63,6 +91,28 @@ namespace PokemonWebAPI.Controllers
                 return BadRequest();
 
             return Ok(country);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCountry([FromBody] CountryDto countryCreate)
+        {
+            if (countryCreate == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var countryMap = _mapper.Map<Country>(countryCreate);
+
+            if (!_countryRepository.CreateCountry(countryMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

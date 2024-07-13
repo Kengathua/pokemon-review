@@ -25,5 +25,9 @@ namespace PokemonWebAPI.Repository
             return _context.Reviews.SingleOrDefault(o => o.Id == reviewId) 
                    ?? throw new KeyNotFoundException($"Review with ID {reviewId} not found.");
         }
+
+        public ICollection<Review> GetReviewsByPokemon(int pokeId){
+            return _context.Reviews.Where(r => r.Pokemon.Id == pokeId).ToList();
+        }
     }
 }

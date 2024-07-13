@@ -2893,11 +2893,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/gathua/trials/PokemonWebAPI/PokemonWebAPI.csproj",
+      "projectUniqueName": "/Users/gathua/projects/pokemon-review/PokemonWebAPI.csproj",
       "projectName": "PokemonWebAPI",
-      "projectPath": "/Users/gathua/trials/PokemonWebAPI/PokemonWebAPI.csproj",
+      "projectPath": "/Users/gathua/projects/pokemon-review/PokemonWebAPI.csproj",
       "packagesPath": "/Users/gathua/.nuget/packages/",
-      "outputPath": "/Users/gathua/trials/PokemonWebAPI/obj/",
+      "outputPath": "/Users/gathua/projects/pokemon-review/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/gathua/.nuget/NuGet/NuGet.Config"
