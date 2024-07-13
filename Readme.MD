@@ -1,17 +1,75 @@
-    CREATE DATABASE pokemon_db;
+## Getting started after cloning
+```
+echo "Restoring packages for PokemonWebAPI..."
+cd PokemonWebAPI
+dotnet restore
+cd ..
 
-    CREATE USER pokemon_user WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'pokemon_pass';
+echo "Restoring packages for PokemonWebAPI.Tests..."
+cd PokemonWebAPI.Tests
+dotnet restore
+cd ..
+```
 
-    ALTER ROLE pokemon_user SET client_encoding TO 'utf8';
+### Installing a new package
+```
+dotnet add PokemonWebAPI.Tests/PokemonWebAPI.csproj package <Package.Name>
 
-    ALTER ROLE pokemon_user SET default_transaction_isolation TO 'read committed';
+dotnet add PokemonWebAPI.Tests/PokemonWebAPI.Tests.csproj package <Package.Name>
+```
 
-    ALTER ROLE pokemon_user SET timezone TO 'UTC';
+### Start a new webapi project with unit tests integrated
 
-    GRANT ALL PRIVILEGES ON DATABASE pokemon_db TO pokemon_user;
+```
+# Create a new solution
+dotnet new sln -n pokemon
 
-    CREATE DATABASE pokemon_test;
+# Create a new Web API project
+dotnet new webapi -n PokemonWebAPI
 
-    GRANT ALL PRIVILEGES ON DATABASE pokemon_test TO pokemon_user;
+# Add the Web API project to the solution
+dotnet sln pokemon.sln add PokemonWebAPI/PokemonWebAPI.csproj
 
-    \q
+# Create a new xUnit test project
+dotnet new xunit -n PokemonWebAPI.Tests
+
+# Add the test project to the solution
+dotnet sln pokemon.sln add PokemonWebAPI.Tests/PokemonWebAPI.Tests.csproj
+
+# Add a project reference to the test project
+dotnet add PokemonWebAPI.Tests/PokemonWebAPI.Tests.csproj reference PokemonWebAPI/PokemonWebAPI.csproj
+```
+
+### Commands
+```
+#!/usr/bin/env bash
+
+dotnet clean pokemon.sln
+
+dotnet build pokemon.sln
+
+dotnet test PokemonWebAPI.Tests/PokemonWebAPI.Tests.csproj
+
+dotnet run --project PokemonWebAPI/PokemonWebAPI.csproj
+```
+
+### SQL Commands to Set Up Databases and User
+```sql
+CREATE DATABASE pokemon_db;
+
+CREATE USER pokemon_user WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'pokemon_pass';
+
+ALTER ROLE pokemon_user SET client_encoding TO 'utf8';
+
+ALTER ROLE pokemon_user SET default_transaction_isolation TO 'read committed';
+
+ALTER ROLE pokemon_user SET timezone TO 'UTC';
+
+GRANT ALL PRIVILEGES ON DATABASE pokemon_db TO pokemon_user;
+
+CREATE DATABASE pokemon_test;
+
+GRANT ALL PRIVILEGES ON DATABASE pokemon_test TO pokemon_user;
+
+\q
+```
