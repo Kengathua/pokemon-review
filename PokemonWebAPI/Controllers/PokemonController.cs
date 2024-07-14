@@ -66,15 +66,15 @@ namespace PokemonWebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult CreatePokemon([FromQuery] int ownerId, [FromQuery] int catId, [FromBody] PokemonDto pokemonCreate)
+        public IActionResult CreatePokemon([FromQuery] int ownerId, [FromQuery] int catId, [FromBody] PokemonDto pokemonDto)
         {
-            if (pokemonCreate == null)
+            if (pokemonDto == null)
                 return BadRequest(ModelState);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var pokemonMap = _mapper.Map<Pokemon>(pokemonCreate);
+            var pokemonMap = _mapper.Map<Pokemon>(pokemonDto);
       
             if (!_pokemonRepository.CreatePokemon(ownerId, catId, pokemonMap))
             {
